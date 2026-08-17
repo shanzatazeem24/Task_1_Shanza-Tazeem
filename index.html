@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Python To-Do List</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Python To-Do List</h1>
+
+        <p class="subtitle">
+            Manage your daily tasks easily
+        </p>
+
+
+        <!-- Add Task -->
+
+        <form action="/add" method="POST" class="add-form">
+
+            <input
+                type="text"
+                name="task"
+                placeholder="Enter a new task"
+                required
+            >
+
+            <button type="submit">
+                Add Task
+            </button>
+
+        </form>
+
+
+        <!-- Buttons -->
+
+        <div class="actions">
+
+            <a href="/">
+                <button>Refresh</button>
+            </a>
+
+            <a href="/clear">
+                <button>Clear Completed</button>
+            </a>
+
+        </div>
+
+
+        <!-- Task List -->
+
+        <div class="task-list">
+
+            {% if tasks %}
+
+                {% for task in tasks %}
+
+                <div class="task-card
+                    {% if task.completed %}completed{% endif %}">
+
+                    <div>
+
+                        <h3>
+                            {{ task.title }}
+                        </h3>
+
+                        {% if task.completed %}
+
+                            <span class="status">
+                                Completed
+                            </span>
+
+                        {% else %}
+
+                            <span class="status pending">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="task-buttons">
+
+                        {% if not task.completed %}
+
+                        <a href="/complete/{{ task.id }}">
+                            <button class="done">
+                                Mark Done
+                            </button>
+                        </a>
+
+                        {% endif %}
+
+
+                        <a href="/delete/{{ task.id }}">
+
+                            <button class="delete">
+                                Delete
+                            </button>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty">
+                    No tasks yet. Add your first task!
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>
